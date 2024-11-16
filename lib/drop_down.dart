@@ -25,7 +25,7 @@ class DropDown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> selectedValues = initialValues ?? [];
+    List<String> selectedValues = List<String>.from(initialValues as Iterable) ?? [];
     return Material(
       elevation: 30,
       color: backgroundColor!.withOpacity(0.5),
@@ -49,7 +49,7 @@ class DropDown extends StatelessWidget {
                 } else {
                   selectedValues.remove(itemsText[index]);
                 }
-                onSelectionChange?.call(selectedValues); // Powiadom o zmianie
+                onSelectionChange?.call(selectedValues);
               },
             ),
             ),
