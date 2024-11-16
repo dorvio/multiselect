@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'drop_down.dart';
 
 
-class CustomMultiselect extends StatefulWidget {
+class Multiselect extends StatefulWidget {
   final String labelText;
   final TextStyle labelTextStyle;
   final Color backgroundColor;
@@ -19,7 +19,7 @@ class CustomMultiselect extends StatefulWidget {
   final Color optionListTextColor;
   final double optionListBorderRadius;
 
-  const CustomMultiselect({
+  const Multiselect({
     Key? key,
     this.labelText = 'Wybierz',
     this.labelTextStyle = const TextStyle(color: Colors.black),
@@ -36,10 +36,10 @@ class CustomMultiselect extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CustomMultiselectState createState() => _CustomMultiselectState();
+  _MultiselectState createState() => _MultiselectState();
 }
 
-class _CustomMultiselectState extends State<CustomMultiselect> {
+class _MultiselectState extends State<Multiselect> {
   GlobalKey actionKey = GlobalKey();
   bool isDropdownOpened = false;
   late double _height, _width, _xPosition, _yPosition;
