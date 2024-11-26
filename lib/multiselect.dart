@@ -66,25 +66,42 @@ class _MultiselectState extends State<Multiselect> {
   OverlayEntry _createFloatingDropdown() {
     return OverlayEntry(
       builder: (context) {
-        return Positioned(
-          left: _xPosition,
-          top: _yPosition + _height,
-          width: _width,
-          height: 240,
-          child: DropDown(
-              itemsText: widget.itemText,
-              itemIcons: widget.itemIcons,
-              borderRadius: widget.optionListBorderRadius,
-              backgroundColor: widget.optionListBackgroundColor,
-              textColor: widget.optionListTextColor,
-              initialValues: selectedValues,
-              onSelectionChange: (updatedValues) {
+        return Stack(
+          children: [
+            GestureDetector(
+              onTap: () {
                 setState(() {
-                  selectedValues = updatedValues;
+                  if (isDropdownOpened) {
+                    floatingDropdown.remove();
+                    isDropdownOpened = false;
+                  }
                 });
-                widget.onValueChange?.call(updatedValues);
-              }
-          ),
+              },
+              child: Container(
+                color: Colors.transparent,
+              ),
+            ),
+            Positioned(
+              left: _xPosition,
+              top: _yPosition + _height,
+              width: _width,
+              height: 240,
+              child: DropDown(
+                itemsText: widget.itemText,
+                itemIcons: widget.itemIcons,
+                borderRadius: widget.optionListBorderRadius,
+                backgroundColor: widget.optionListBackgroundColor,
+                textColor: widget.optionListTextColor,
+                initialValues: selectedValues,
+                onSelectionChange: (updatedValues) {
+                  setState(() {
+                    selectedValues = updatedValues;
+                  });
+                  widget.onValueChange?.call(updatedValues);
+                },
+              ),
+            ),
+          ],
         );
       },
     );
