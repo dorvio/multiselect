@@ -111,50 +111,62 @@ class _MultiselectState extends State<Multiselect> {
   @override
   Widget build(BuildContext context) {
     Color iconColor = widget.labelTextStyle?.color ?? Colors.black;
-    return GestureDetector(
-        key: actionKey,
-        onTap: (){
+    return WillPopScope(
+      onWillPop: () async {
+        if (isDropdownOpened) {
           setState(() {
-            if (isDropdownOpened) {
-              floatingDropdown.remove();
-            } else {
-              findDropdownData();
-              floatingDropdown = _createFloatingDropdown();
-              Overlay.of(context).insert(floatingDropdown);
-            }
-            isDropdownOpened = !isDropdownOpened;
+            floatingDropdown.remove();
+            isDropdownOpened = false;
           });
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            color: widget.backgroundColor,
-            border: Border.all(
-              color: widget.borderColor!,
-              width: 3,
-            ),
-            borderRadius: BorderRadius.circular(widget.borderRadius!),
-          ),
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 13),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Text(
-                  selectedValues.isNotEmpty
-                      ? selectedValues.join(', ')
-                      : widget.labelText,
-                  style: widget.labelTextStyle,
-                  softWrap: true,
-                  overflow: TextOverflow.visible,
-                ),
+          return false;
+        }
+        return true;
+      },
+      child: GestureDetector(
+          key: actionKey,
+          onTap: (){
+            setState(() {
+              if (isDropdownOpened) {
+                floatingDropdown.remove();
+              } else {
+                findDropdownData();
+                floatingDropdown = _createFloatingDropdown();
+                Overlay.of(context).insert(floatingDropdown);
+              }
+              isDropdownOpened = !isDropdownOpened;
+            });
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: widget.backgroundColor,
+              border: Border.all(
+                color: widget.borderColor!,
+                width: 3,
               ),
-              SizedBox(width: 8),
-              isDropdownOpened
-                  ? Icon(Icons.arrow_drop_up, color: iconColor)
-                  : Icon(Icons.arrow_drop_down, color: iconColor),
-            ],
-          ),
-        )
+              borderRadius: BorderRadius.circular(widget.borderRadius!),
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 13),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Text(
+                    selectedValues.isNotEmpty
+                        ? selectedValues.join(', ')
+                        : widget.labelText,
+                    style: widget.labelTextStyle,
+                    softWrap: true,
+                    overflow: TextOverflow.visible,
+                  ),
+                ),
+                SizedBox(width: 8),
+                isDropdownOpened
+                    ? Icon(Icons.arrow_drop_up, color: iconColor)
+                    : Icon(Icons.arrow_drop_down, color: iconColor),
+              ],
+            ),
+          )
+      ),
     );
   }
 }
